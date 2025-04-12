@@ -1,4 +1,5 @@
 # MCP TypeScript Server Starter
+[![smithery badge](https://smithery.ai/badge/@ralf-boltshauser/mcp-domain-checker-server)](https://smithery.ai/server/@ralf-boltshauser/mcp-domain-checker-server)
 
 A starter project for building Model Context Protocol (MCP) servers in TypeScript. This project provides a simple echo server implementation that demonstrates the core features of MCP.
 
@@ -11,6 +12,14 @@ A starter project for building Model Context Protocol (MCP) servers in TypeScrip
 - Built-in inspector for testing and debugging
 
 ## Getting Started
+
+### Installing via Smithery
+
+To install mcp-domain-checker-server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@ralf-boltshauser/mcp-domain-checker-server):
+
+```bash
+npx -y @smithery/cli install @ralf-boltshauser/mcp-domain-checker-server --client claude
+```
 
 ### Prerequisites
 
