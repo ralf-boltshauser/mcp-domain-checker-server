@@ -12,8 +12,8 @@ startCommand:
   commandFunction: |
     (config) => ({
       command: "node",
-      args: ["dist/index.js"],
+      args: ["dist/index.cjs"],
       env: {
-        API_TOKEN: config.apiToken
+        VERCEL_API_TOKEN: config.apiToken
       }
     })
