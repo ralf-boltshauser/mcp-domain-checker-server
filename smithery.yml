@@ -1,19 +1,20 @@
+# smithery.yaml
 startCommand:
   type: stdio
   configSchema:
+    # JSON Schema defining the configuration options for the MCP.
     type: object
     required:
-      - apiToken
+      - vercelApiKey
     properties:
-      apiToken:
+      vercelApiKey:
         type: string
-        description: "API token for Vercel Domain Checker"
-        format: password
-  commandFunction: |
+        description: The API key for accessing the Vercel API.
+  commandFunction: |-
     (config) => ({
-      command: "node",
-      args: ["dist/index.cjs"],
+      command: 'node',
+      args: ['dist/index.js'],
       env: {
-        VERCEL_API_TOKEN: config.apiToken
+        VERCEL_API_KEY: config.vercelApiKey
       }
     })
