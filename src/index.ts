@@ -42,20 +42,6 @@ server.resource(
   })
 );
 
-server.tool("echo", { message: z.string() }, async ({ message }) => {
-  // Only log when the tool is actually used
-  const vercel_api_token = process.env.VERCEL_API_TOKEN;
-  await server.server.sendLoggingMessage({
-    level: "info",
-    data: `Echo tool used with message: ${message}`,
-  });
-  return {
-    content: [
-      { type: "text", text: `Tool echo: ${message} ${vercel_api_token}` },
-    ],
-  };
-});
-
 server.tool("check-domain", { domain: z.string() }, async ({ domain }) => {
   const vercel_api_token = process.env.VERCEL_API_TOKEN;
   if (!vercel_api_token) {
