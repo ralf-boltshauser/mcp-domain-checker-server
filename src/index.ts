@@ -1,13 +1,12 @@
-import { config } from "dotenv";
-import { resolve } from "path";
 import { checkDomainAvailability } from "./domain-checker.js";
 
-// Get the absolute path to the .env file using process.cwd()
-const envPath = resolve(
-  "/Users/ralf/Documents/prj/exploration/mcp/servers/mcp-domain-checker-server",
-  ".env"
-);
-config({ path: envPath });
+const args = process.argv.slice(2);
+if (args.length === 0) {
+  console.error("Please provide a Vercel API key as a command-line argument");
+  process.exit(1);
+}
+
+const vercelApiKey = args[0];
 
 import {
   McpServer,
@@ -43,8 +42,7 @@ server.resource(
 );
 
 server.tool("check-domain", { domain: z.string() }, async ({ domain }) => {
-  const vercel_api_token = process.env.VERCEL_API_TOKEN;
-  if (!vercel_api_token) {
+  if (!vercelApiKey) {
     return {
       content: [
         {
@@ -55,7 +53,7 @@ server.tool("check-domain", { domain: z.string() }, async ({ domain }) => {
     };
   }
 
-  const result = await checkDomainAvailability(domain, vercel_api_token);
+  const result = await checkDomainAvailability(domain, vercelApiKey);
 
   if (result.error) {
     return {

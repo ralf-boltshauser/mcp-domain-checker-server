@@ -13,8 +13,5 @@ startCommand:
   commandFunction: |-
     (config) => ({
       command: 'node',
-      args: ['dist/index.js'],
-      env: {
-        VERCEL_API_KEY: config.vercelApiKey
-      }
+      args: ['dist/index.js', config.vercelApiKey],
     })
