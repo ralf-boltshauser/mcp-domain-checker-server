@@ -1,13 +1,14 @@
-# MCP Domain Checker Server
+# DomainGenius MCP Server
 
-A ModelContextProtocol server that provides domain availability checking functionality. This server allows you to check if a domain is available for registration and get its price information using the Vercel API.
+The DomainGenius MCP server powers the domain search functionality of [DomainGenius](https://domaingenius.ch/), providing real-time domain availability checks and pricing information.
 
 ## Features
 
-- Check domain availability
-- Get domain pricing information
+- Real-time domain availability checking
+- Domain pricing information retrieval
 - Automatic TLD handling (defaults to .com if not specified)
 - Error handling and detailed response format
+- Seamless integration with AI-powered domain search tools
 
 ## Quick Start
 
