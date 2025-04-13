@@ -9,6 +9,7 @@ services:
     environment:
       - NODE_ENV=production
       - VERCEL_API_KEY=${VERCEL_API_KEY}
+      - COOLIFY_EXPOSE_PORT=3001
     volumes:
       - .:/app
       - /app/node_modules
