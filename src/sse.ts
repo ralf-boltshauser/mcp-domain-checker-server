@@ -102,13 +102,20 @@ const app = express();
 // sessionId to transport
 const transports: { [sessionId: string]: SSEServerTransport } = {};
 
+// app.get("/sse", async (_: Request, res: Response) => {
+//   const transport = new SSEServerTransport("/messages", res);
+//   transports[transport.sessionId] = transport;
+//   res.on("close", () => {
+//     delete transports[transport.sessionId];
+//   });
+//   await server.connect(transport);
+// });
 app.get("/sse", async (_: Request, res: Response) => {
-  const transport = new SSEServerTransport("/messages", res);
-  transports[transport.sessionId] = transport;
-  res.on("close", () => {
-    delete transports[transport.sessionId];
-  });
-  await server.connect(transport);
+  res.send("Hello from SSE");
+});
+
+app.get("/test", async (_: Request, res: Response) => {
+  res.send("Hello from SSE");
 });
 
 app.get("/", async (_: Request, res: Response) => {
