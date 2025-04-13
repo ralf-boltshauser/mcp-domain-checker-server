@@ -111,6 +111,10 @@ app.get("/sse", async (_: Request, res: Response) => {
   await server.connect(transport);
 });
 
+app.get("/", async (_: Request, res: Response) => {
+  res.send("Hello, world!");
+});
+
 app.post("/messages", async (req: Request, res: Response) => {
   const sessionId = req.query.sessionId as string;
   const transport = transports[sessionId];
