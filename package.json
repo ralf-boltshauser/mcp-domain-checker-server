@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/index.ts --outfile=dist/index.cjs --bundle --platform=node --format=cjs --banner:js='#!/usr/bin/env node' && pnpm run make-executable",
+    "build-sse": "esbuild src/sse.ts --outfile=dist/sse.cjs --bundle --platform=node --format=cjs --banner:js='#!/usr/bin/env node' && pnpm run make-executable-sse",
     "make-executable": "chmod +x dist/index.cjs",
+    "make-executable-sse": "chmod +x dist/sse.cjs",
     "start": "node dist/index.cjs",
+    "start-sse": "node dist/sse.cjs",
     "watch": "esbuild src/index.ts --outfile=dist/index.cjs --bundle --platform=node --format=cjs --banner:js='#!/usr/bin/env node' --watch",
     "inspect": "pnpx @modelcontextprotocol/inspector node dist/index.cjs",
     "dev": "concurrently \"pnpm run watch\" \"pnpm run inspect\"",
@@ -19,6 +22,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.9.0",
     "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

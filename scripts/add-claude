@@ -4,11 +4,19 @@
 CURRENT_DIR=$(pwd)
 
 # Create the configuration JSON
+VERCEL_API_KEY=$1
+
+# Check if VERCEL_API_KEY is provided
+if [ -z "$VERCEL_API_KEY" ]; then
+  echo "Please provide VERCEL_API_KEY environment variable"
+  exit 1
+fi
+
 CONFIG_JSON='{
   "mcpServers": {
-    "echo-server": {
+    "mcp-domain-checker-server": {
       "command": "node",
-      "args": ["'$CURRENT_DIR'/dist/index.cjs"]
+      "args": ["'$CURRENT_DIR'/dist/index.cjs", "'$VERCEL_API_KEY'"]
     }
   }
 }'

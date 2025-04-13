@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  sse:
+    build:
+      context: .
+      dockerfile: sse-Dockerfile
+    command: pnpm run start-sse ${VERCEL_API_KEY}
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - VERCEL_API_KEY=${VERCEL_API_KEY}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped 
