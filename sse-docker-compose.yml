@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: sse-Dockerfile
     command: pnpm run start-sse ${VERCEL_API_KEY}
-    ports:
-      - "3001:3001"
     environment:
       - NODE_ENV=production
       - VERCEL_API_KEY=${VERCEL_API_KEY}
