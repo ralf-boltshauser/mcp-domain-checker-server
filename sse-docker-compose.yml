@@ -9,6 +9,8 @@ services:
     environment:
       - NODE_ENV=production
       - VERCEL_API_KEY=${VERCEL_API_KEY}
+    labels:
+      - "traefik.http.services.sse.loadbalancer.server.port=3001"
     volumes:
       - .:/app
       - /app/node_modules
