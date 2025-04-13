@@ -27,31 +27,38 @@ services:
       - coolify.environmentName=production
       - coolify.pullRequestId=0
       - traefik.enable=true
-      - traefik.http.middlewares.gzip.compress=true
+      # Basic configuration
+      - traefik.http.services.sse-server.loadbalancer.server.port=3001
+      # HTTP to HTTPS redirect
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.entryPoints=http
       - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.middlewares=redirect-to-https
       - 'traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/`)'
-      - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=http-0-b8oksko4k4swo8ocoo840cgg-sse-server
+      - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=sse-server
+      # HTTPS configuration
       - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.entryPoints=https
-      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.middlewares=gzip
       - 'traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/`)'
-      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=https-0-b8oksko4k4swo8ocoo840cgg-sse-server
-      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=sse-server
       - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls=true
-      - traefik.http.services.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.loadbalancer.server.port=3001
-      - traefik.http.services.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.loadbalancer.server.port=3001
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls.certresolver=letsencrypt
       # SSE specific configuration
       - traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Accel-Buffering=no
       - traefik.http.middlewares.sse-headers.headers.customresponseheaders.Cache-Control=no-cache, no-transform
       - traefik.http.middlewares.sse-headers.headers.customresponseheaders.Connection=keep-alive
       - traefik.http.middlewares.sse-headers.headers.customresponseheaders.Content-Type=text/event-stream
+      - traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Content-Type-Options=nosniff
+      # SSE specific router
       - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.entryPoints=https
       - 'traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/sse`)'
       - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.middlewares=sse-headers
-      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=https-0-b8oksko4k4swo8ocoo840cgg-sse-server
+      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=sse-server
       - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls=true
       - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls.certresolver=letsencrypt
+      # Timeout settings
+      - traefik.http.services.sse-server.loadbalancer.server.timeout=0s
+      - traefik.http.services.sse-server.loadbalancer.server.readtimeout=0s
+      - traefik.http.services.sse-server.loadbalancer.server.writetimeout=0s
+      # Caddy configuration
       - 'caddy_0.encode=zstd gzip'
       - 'caddy_0.handle_path.0_reverse_proxy={{upstreams 3001}}'
       - 'caddy_0.handle_path=/*'
