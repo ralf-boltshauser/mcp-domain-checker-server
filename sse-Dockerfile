@@ -18,6 +18,4 @@ COPY . .
 RUN esbuild src/sse.ts --outfile=dist/sse.cjs --bundle --platform=node --format=cjs --banner:js='#!/usr/bin/env node' && \
   chmod +x dist/sse.cjs
 
-EXPOSE 3001
-
 CMD ["pnpm", "run", "start-sse"] 
