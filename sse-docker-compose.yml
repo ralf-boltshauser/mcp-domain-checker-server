@@ -22,20 +22,33 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.sse-server.loadbalancer.server.port=3001"
       
-      # HTTP Router (redirects to HTTPS)
-      - "traefik.http.routers.sse-server-http.entrypoints=http"
-      - "traefik.http.routers.sse-server-http.rule=Host(`mcp.ralfbuilds.com`)"
-      - "traefik.http.routers.sse-server-http.middlewares=redirect-to-https"
-      - "traefik.http.routers.sse-server-http.service=sse-server"
+      # Root HTTP Router (redirects to HTTPS)
+      - "traefik.http.routers.root-http.entrypoints=http"
+      - "traefik.http.routers.root-http.rule=Host(`mcp.ralfbuilds.com`)"
+      - "traefik.http.routers.root-http.middlewares=redirect-to-https"
+      - "traefik.http.routers.root-http.service=sse-server"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       
-      # HTTPS Router
-      - "traefik.http.routers.sse-server-https.entrypoints=https"
-      - "traefik.http.routers.sse-server-https.rule=Host(`mcp.ralfbuilds.com`)"
-      - "traefik.http.routers.sse-server-https.middlewares=sse-headers"
-      - "traefik.http.routers.sse-server-https.service=sse-server"
-      - "traefik.http.routers.sse-server-https.tls=true"
-      - "traefik.http.routers.sse-server-https.tls.certresolver=letsencrypt"
+      # Root HTTPS Router
+      - "traefik.http.routers.root-https.entrypoints=https"
+      - "traefik.http.routers.root-https.rule=Host(`mcp.ralfbuilds.com`)"
+      - "traefik.http.routers.root-https.service=sse-server"
+      - "traefik.http.routers.root-https.tls=true"
+      - "traefik.http.routers.root-https.tls.certresolver=letsencrypt"
+      
+      # SSE HTTP Router (redirects to HTTPS)
+      - "traefik.http.routers.sse-http.entrypoints=http"
+      - "traefik.http.routers.sse-http.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/sse`)"
+      - "traefik.http.routers.sse-http.middlewares=redirect-to-https"
+      - "traefik.http.routers.sse-http.service=sse-server"
+      
+      # SSE HTTPS Router
+      - "traefik.http.routers.sse-https.entrypoints=https"
+      - "traefik.http.routers.sse-https.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/sse`)"
+      - "traefik.http.routers.sse-https.middlewares=sse-headers"
+      - "traefik.http.routers.sse-https.service=sse-server"
+      - "traefik.http.routers.sse-https.tls=true"
+      - "traefik.http.routers.sse-https.tls.certresolver=letsencrypt"
       
       # SSE specific middleware
       - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Accel-Buffering=no"
