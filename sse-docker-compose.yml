@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: sse-Dockerfile
     container_name: mcp-sse-server
+    # ports:
+    #   - "3001:3001"
     environment:
       - NODE_ENV=production
       - VERCEL_API_KEY=${VERCEL_API_KEY}
