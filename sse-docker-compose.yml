@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: sse-Dockerfile
     container_name: mcp-sse-server
-    # ports:
-    #   - "3001:3001"
+    ports:
+      - "3001:3001"
     environment:
       - NODE_ENV=production
       - VERCEL_API_KEY=${VERCEL_API_KEY}
@@ -18,17 +18,41 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
+      # Basic Traefik configuration
       - "traefik.enable=true"
-      - "traefik.http.routers.sse-server.rule=Host(`your-domain.com`)"
       - "traefik.http.services.sse-server.loadbalancer.server.port=3001"
-      # SSE specific settings
+      
+      # HTTP Router (redirects to HTTPS)
+      - "traefik.http.routers.sse-server-http.entrypoints=http"
+      - "traefik.http.routers.sse-server-http.rule=Host(`mcp.ralfbuilds.com`)"
+      - "traefik.http.routers.sse-server-http.middlewares=redirect-to-https"
+      - "traefik.http.routers.sse-server-http.service=sse-server"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      
+      # HTTPS Router
+      - "traefik.http.routers.sse-server-https.entrypoints=https"
+      - "traefik.http.routers.sse-server-https.rule=Host(`mcp.ralfbuilds.com`)"
+      - "traefik.http.routers.sse-server-https.middlewares=sse-headers"
+      - "traefik.http.routers.sse-server-https.service=sse-server"
+      - "traefik.http.routers.sse-server-https.tls=true"
+      - "traefik.http.routers.sse-server-https.tls.certresolver=letsencrypt"
+      
+      # SSE specific middleware
       - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Accel-Buffering=no"
-      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Cache-Control=no-cache"
+      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Cache-Control=no-cache, no-transform"
       - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Connection=keep-alive"
       - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Content-Type=text/event-stream"
+      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Content-Type-Options=nosniff"
+      
       # Timeout settings
-      - "traefik.http.routers.sse-server.middlewares=sse-headers@docker"
       - "traefik.http.services.sse-server.loadbalancer.server.scheme=http"
       - "traefik.http.services.sse-server.loadbalancer.server.timeout=0s"
       - "traefik.http.services.sse-server.loadbalancer.server.readtimeout=0s"
-      - "traefik.http.services.sse-server.loadbalancer.server.writetimeout=0s" 
+      - "traefik.http.services.sse-server.loadbalancer.server.writetimeout=0s"
+      
+      # Remove Caddy configuration as it might conflict with Traefik
+      # - "caddy_0=https://mcp.ralfbuilds.com"
+      # - "caddy_0.handle_path_sse.0_reverse_proxy={{upstreams 3001}}"
+      # - "caddy_0.handle_path_sse=/sse/*"
+      # - "caddy_0.handle_path_sse.encode=off"
+      # - "caddy_0.header=-Server" 
