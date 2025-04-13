@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  sse-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp-sse-server
+    # ports:
+    #   - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sse-server.rule=Host(`your-domain.com`)"
+      - "traefik.http.services.sse-server.loadbalancer.server.port=3001"
+      # SSE specific settings
+      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Accel-Buffering=no"
+      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Cache-Control=no-cache"
+      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Connection=keep-alive"
+      - "traefik.http.middlewares.sse-headers.headers.customresponseheaders.Content-Type=text/event-stream"
+      # Timeout settings
+      - "traefik.http.routers.sse-server.middlewares=sse-headers@docker"
+      - "traefik.http.services.sse-server.loadbalancer.server.scheme=http"
+      - "traefik.http.services.sse-server.loadbalancer.server.timeout=0s"
+      - "traefik.http.services.sse-server.loadbalancer.server.readtimeout=0s"
+      - "traefik.http.services.sse-server.loadbalancer.server.writetimeout=0s" 
