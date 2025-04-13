@@ -5,8 +5,67 @@ services:
     build:
       context: .
       dockerfile: sse-Dockerfile
-    container_name: mcp-sse-server
+    container_name: sse-server-b8oksko4k4swo8ocoo840cgg-204633690921
     environment:
-      - NODE_ENV=production
-      - VERCEL_API_KEY=${VERCEL_API_KEY}
+      NODE_ENV: production
+      VERCEL_API_KEY: '${VERCEL_API_KEY}'
+      COOLIFY_BRANCH: '"master"'
+      COOLIFY_RESOURCE_UUID: b8oksko4k4swo8ocoo840cgg
+      COOLIFY_CONTAINER_NAME: sse-server-b8oksko4k4swo8ocoo840cgg-204633690921
+      COOLIFY_URL: 'https://mcp.ralfbuilds.com:3001'
+      COOLIFY_FQDN: 'mcp.ralfbuilds.com:3001'
     restart: unless-stopped
+    labels:
+      - coolify.managed=true
+      - coolify.version=4.0.0-beta.407
+      - coolify.applicationId=3
+      - coolify.type=application
+      - coolify.name=sse-server-b8oksko4k4swo8ocoo840cgg-204633690921
+      - coolify.resourceName=ralf-boltshausermcp-domain-checker-servermain-mg4c8ssk8gw844gw0w8os04s
+      - coolify.projectName=domain-genius-mcp
+      - coolify.serviceName=ralf-boltshausermcp-domain-checker-servermain-mg4c8ssk8gw844gw0w8os04s
+      - coolify.environmentName=production
+      - coolify.pullRequestId=0
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.entryPoints=http
+      - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.middlewares=redirect-to-https
+      - 'traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/`)'
+      - traefik.http.routers.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=http-0-b8oksko4k4swo8ocoo840cgg-sse-server
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.entryPoints=https
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.middlewares=gzip
+      - 'traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/`)'
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=https-0-b8oksko4k4swo8ocoo840cgg-sse-server
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls=true
+      - traefik.http.services.http-0-b8oksko4k4swo8ocoo840cgg-sse-server.loadbalancer.server.port=3001
+      - traefik.http.services.https-0-b8oksko4k4swo8ocoo840cgg-sse-server.loadbalancer.server.port=3001
+      # SSE specific configuration
+      - traefik.http.middlewares.sse-headers.headers.customresponseheaders.X-Accel-Buffering=no
+      - traefik.http.middlewares.sse-headers.headers.customresponseheaders.Cache-Control=no-cache, no-transform
+      - traefik.http.middlewares.sse-headers.headers.customresponseheaders.Connection=keep-alive
+      - traefik.http.middlewares.sse-headers.headers.customresponseheaders.Content-Type=text/event-stream
+      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.entryPoints=https
+      - 'traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.rule=Host(`mcp.ralfbuilds.com`) && PathPrefix(`/sse`)'
+      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.middlewares=sse-headers
+      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.service=https-0-b8oksko4k4swo8ocoo840cgg-sse-server
+      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls=true
+      - traefik.http.routers.sse-https-0-b8oksko4k4swo8ocoo840cgg-sse-server.tls.certresolver=letsencrypt
+      - 'caddy_0.encode=zstd gzip'
+      - 'caddy_0.handle_path.0_reverse_proxy={{upstreams 3001}}'
+      - 'caddy_0.handle_path=/*'
+      - caddy_0.header=-Server
+      - 'caddy_0.try_files={path} /index.html /index.php'
+      - 'caddy_0=https://mcp.ralfbuilds.com'
+      - caddy_ingress_network=b8oksko4k4swo8ocoo840cgg
+    networks:
+      b8oksko4k4swo8ocoo840cgg: null
+volumes: {  }
+networks:
+  b8oksko4k4swo8ocoo840cgg:
+    name: b8oksko4k4swo8ocoo840cgg
+    external: true
+configs: {  }
+secrets: {  }
+
