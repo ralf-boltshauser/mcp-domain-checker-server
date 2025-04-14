@@ -91,7 +91,10 @@ export async function checkDomainAvailability(
     return {
       domain: domainWithTLD,
       available: false,
-      error: error instanceof Error ? error.message : "Failed to check domain",
+      error:
+        error instanceof Error
+          ? error.message + " from DomainGenius: " + apiToken.slice(0, 5)
+          : "Failed to check domain from DomainGenius",
     };
   }
 }
