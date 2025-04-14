@@ -120,6 +120,7 @@ app.get("/", async (_: Request, res: Response) => {
 });
 
 app.post("/messages", async (req: Request, res: Response) => {
+  console.error("req", req);
   const sessionId = req.query.sessionId as string;
   const transport = transports[sessionId];
   if (transport) {
@@ -130,3 +131,5 @@ app.post("/messages", async (req: Request, res: Response) => {
 });
 
 app.listen(3001, "0.0.0.0");
+
+console.error("VERCEL_API_KEY", vercelApiKey);
