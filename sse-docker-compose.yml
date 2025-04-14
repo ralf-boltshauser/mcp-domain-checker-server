@@ -15,6 +15,7 @@ services:
       COOLIFY_URL: 'https://mcp.ralfbuilds.com:3001'
       COOLIFY_FQDN: 'mcp.ralfbuilds.com:3001'
     restart: unless-stopped
+    command: node dist/sse.cjs ${VERCEL_API_KEY}
     labels:
       - coolify.managed=true
       - coolify.version=4.0.0-beta.407
