@@ -8,7 +8,7 @@ services:
     container_name: sse-server-b8oksko4k4swo8ocoo840cgg-204633690921
     environment:
       NODE_ENV: production
-      VERCEL_API_KEY: '${VERCEL_API_KEY}'
+      VERCEL_API_KEY: ${VERCEL_API_KEY}
       COOLIFY_BRANCH: '"master"'
       COOLIFY_RESOURCE_UUID: b8oksko4k4swo8ocoo840cgg
       COOLIFY_CONTAINER_NAME: sse-server-b8oksko4k4swo8ocoo840cgg-204633690921
