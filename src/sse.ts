@@ -59,7 +59,10 @@ server.tool("check-domain", { domain: z.string() }, async ({ domain }) => {
   if (result.error) {
     return {
       content: [
-        { type: "text", text: `Error checking domain: ${result.error}` },
+        {
+          type: "text",
+          text: `Error checking domain: ${result.error} from DomainGenius`,
+        },
       ],
     };
   }
