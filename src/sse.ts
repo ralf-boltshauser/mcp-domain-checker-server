@@ -2,13 +2,10 @@ import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import express, { Request, Response } from "express";
 import { checkDomainAvailability } from "./domain-checker.js";
 
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  console.error("Please provide a Vercel API key as a command-line argument");
-  process.exit(1);
+const vercelApiKey = process.env.VERCEL_API_KEY;
+if (!vercelApiKey) {
+  throw new Error("VERCEL_API_KEY is not set in environment variables");
 }
-
-const vercelApiKey = args[0];
 
 import {
   McpServer,
