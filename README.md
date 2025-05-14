@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/ralf-boltshauser-mcp-domain-checker-server-badge.png)](https://mseep.ai/app/ralf-boltshauser-mcp-domain-checker-server)
+
 # DomainGenius MCP Server
 
 The DomainGenius MCP server powers the domain search functionality of [DomainGenius](https://domaingenius.ch/), providing real-time domain availability checks and pricing information.
